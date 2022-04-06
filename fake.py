@@ -69,6 +69,6 @@ if (flag):
             'props' : [('background', 'white')]
         }
         ]
-    ).hide(axis='index')
+    )
   
     st.table(styled_df)
