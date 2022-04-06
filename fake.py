@@ -2,6 +2,10 @@ import streamlit as st
 from pandas import read_excel
 from openpyxl import load_workbook
 
+st.set_page_config(
+    page_title="Fake generator", 
+    page_icon=None, 
+    layout="wide")
 st.title("""Fake chart""")
 # st ELEMENT
 uploaded_file = st.file_uploader("""Upload fake raw data file: """)
