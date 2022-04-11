@@ -85,7 +85,7 @@ if (flag):
             'props' : [('background', 'white')]
         }
         ]
-    ).hide(axis="index")
+    )
 
     # st ELEMENT
     my_bar.progress(100)
