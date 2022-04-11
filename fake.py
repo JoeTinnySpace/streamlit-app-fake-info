@@ -1,6 +1,7 @@
 import streamlit as st
 from pandas import read_excel
 from openpyxl import load_workbook
+from dataframe_image import export
 
 st.set_page_config(
     page_title="Fake generator", 
@@ -39,6 +40,11 @@ def table_styler(dataframe):
         ]
     )
 
+# def download_png(dataframe):
+    
+
+#     return export(dataframe,'fake_report.png')
+
 if uploaded_file == None:
     
     st.write("""
@@ -50,7 +56,7 @@ else:
     if st.session_state['uploaded_file'] != uploaded_file:
         st.session_state['uploaded_file'] = uploaded_file
         del st.session_state['filtered_df']
-        
+
     st.write(""" ## Alleppey cluster Fake attempts""")
     loading.progress(10)
     my_table = st.table()
@@ -96,14 +102,17 @@ if (flag):
         filtered_df.loc[:, "geo_distance"] = filtered_df["geo_distance"].map('{:.2f}'.format)
         loading.progress(80)
         
-
+    loading.progress(100)
     if 'filtered_df' not in st.session_state:
         st.session_state['filtered_df'] = filtered_df
+    styled_df = table_styler(filtered_df)
+    my_table.table(styled_df)
 
-    my_table.table(table_styler(filtered_df))
     loading.progress(100)
+
     hub_name = st.session_state['hub_name']
-    my_form = st.form(key="filter_table")
+
+    my_form = st.form(key="filter_form")
     selected = my_form.multiselect("Choose hubs", HUBS)
     selected_df = filtered_df.loc[filtered_df[hub_name].isin(selected)].sort_values([hub_name,'Kirana'])
     update_table =my_form.form_submit_button()
@@ -112,3 +121,11 @@ if (flag):
         styled_df = table_styler(selected_df)
         my_table.table(styled_df)
     loading.empty()
+    # image = export(styled_df,'pg')
+    
+    # st.download_button(
+    #          label="Download Report",
+    #          data= ,
+    #          file_name="fake_report.png",
+    #          mime="image/png"
+    #        )
