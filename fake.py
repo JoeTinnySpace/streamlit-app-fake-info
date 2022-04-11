@@ -43,17 +43,17 @@ if (flag):
         hub_name = 'hub_name'
     # elif '' in df:
         # hub_name = ''
-    
+        
+    my_table = st.table()
+
     COLUMNS = [hub_name, 'fake_detection_reason', 'geo_distance' ,'vendor_tracking_id', 'undel_unpick_status',
                 'agent_name', 'Kirana']
     HUBS = ['AlleppeyHub_ALP','CharumoodHub_COO','ChengannurHub_CNN', 'Cherthala_CTA',
             'KaruvattaHub_KVT', 'KayamkulamHub_KKM', 'SASThuravoorODH_THO', 'STCMuthukulamODH_MKL']
     EXCLUSION_LIST = ['DELIVERED', 'UNDELIVERED']
-    # HUBS = ['AlleppeyHub_ALP']     
+    # HUBS = ['AlleppeyHub_ALP']  
     my_bar.progress(50)
     
-    # rounding the distance unit ( TODO : make it in KM)
-    df.loc[:, "geo_distance"] = df["geo_distance"].map('{:.2f}'.format)
     my_bar.progress(65)
     
     # filtering dataframe based on hub_name with HUBS list, and sorting alphabetically.
@@ -63,6 +63,9 @@ if (flag):
     # removing delivered fakes
     filtered_df = filtered_df.loc[~filtered_df['undel_unpick_status'].isin(EXCLUSION_LIST)]
     my_bar.progress(90)
+
+    # rounding the distance unit ( TODO : make it in KM)
+    filtered_df.loc[:, "geo_distance"] = filtered_df["geo_distance"].map('{:.2f}'.format)
 
     # styling for the dataframe
     styled_df = filtered_df.style.set_table_styles(
@@ -82,12 +85,17 @@ if (flag):
             'props' : [('background', 'white')]
         }
         ]
-    )
+    ).hide(axis="index")
+
     # st ELEMENT
     my_bar.progress(100)
-    st.table(styled_df)
+
+    my_table.table(styled_df)
+
+
     my_bar.empty()
 
-    st.button('Download Excel File')
+    # download = st.button('Download Excel File')
 
     # if download:
+    #     st.write("Downloaded")
