@@ -51,19 +51,19 @@ if (flag):
     EXCLUSION_LIST = ['DELIVERED', 'UNDELIVERED']
     # HUBS = ['AlleppeyHub_ALP']     
     my_bar.progress(50)
-    print('Counting the distance...')
+    
     # rounding the distance unit ( TODO : make it in KM)
     df.loc[:, "geo_distance"] = df["geo_distance"].map('{:.2f}'.format)
     my_bar.progress(65)
-    print('Filtering dataframe and sorting...')
+    
     # filtering dataframe based on hub_name with HUBS list, and sorting alphabetically.
     filtered_df = df.loc[df[hub_name].isin(HUBS), COLUMNS].sort_values(hub_name)
     my_bar.progress(75)
-    print('More filtering... We dont need delivered fake...')
+    
     # removing delivered fakes
     filtered_df = filtered_df.loc[~filtered_df['undel_unpick_status'].isin(EXCLUSION_LIST)]
     my_bar.progress(90)
-    print('Styling the dataframe...')
+
     # styling for the dataframe
     styled_df = filtered_df.style.set_table_styles(
         [{'selector' : 'th',
@@ -87,3 +87,7 @@ if (flag):
     my_bar.progress(100)
     st.table(styled_df)
     my_bar.empty()
+
+    st.button('Download Excel File')
+
+    # if download:
