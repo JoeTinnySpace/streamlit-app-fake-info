@@ -57,7 +57,7 @@ if (flag):
     my_bar.progress(65)
     
     # filtering dataframe based on hub_name with HUBS list, and sorting alphabetically.
-    filtered_df = df.loc[df[hub_name].isin(HUBS), COLUMNS].sort_values(hub_name)
+    filtered_df = df.loc[df[hub_name].isin(HUBS), COLUMNS].sort_values([hub_name,'Kirana'])
     my_bar.progress(75)
     
     # removing delivered fakes
