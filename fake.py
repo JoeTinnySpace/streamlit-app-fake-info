@@ -11,7 +11,7 @@ st.set_page_config(
 st.title("""Fake chart""")
 
 flag = 0
-
+########################
 loading = st.progress(0)
 
 HUBS = ['AlleppeyHub_ALP','CharumoodHub_COO','ChengannurHub_CNN', 'Cherthala_CTA',
@@ -39,11 +39,7 @@ def table_styler(dataframe):
         }
         ]
     )
-
-# def download_png(dataframe):
-    
-
-#     return export(dataframe,'fake_report.png')
+   
 
 if uploaded_file == None:
     
@@ -53,19 +49,23 @@ if uploaded_file == None:
 else:
     if 'uploaded_file' not in st.session_state:
         st.session_state['uploaded_file'] = uploaded_file
+
     if st.session_state['uploaded_file'] != uploaded_file:
         st.session_state['uploaded_file'] = uploaded_file
         del st.session_state['filtered_df']
 
     st.write(""" ## Alleppey cluster Fake attempts""")
+    ########################
     loading.progress(10)
     my_table = st.table()
 
     if 'filtered_df' in st.session_state:
         filtered_df = st.session_state['filtered_df']
         flag = 2
+        ########################
         loading.progress(30)
     else:
+        ########################
         loading.progress(20)
         possible_sheet_name = ["raw data", "fake tids"]
 
@@ -76,6 +76,7 @@ else:
         try:
             df = read_excel(uploaded_file, sheet_name=sheetname[0])
             flag = 1
+            ########################
             loading.progress(30)
         except Exception as e:
             st.error(e)
@@ -83,6 +84,7 @@ else:
 
 
 if (flag):
+    ########################
     loading.progress(40)
     if flag != 2:
         if 'Hub Name' in df:
@@ -96,18 +98,22 @@ if (flag):
                     'agent_name', 'Kirana']
         
         EXCLUSION_LIST = ['DELIVERED', 'UNDELIVERED']
+        ########################
         loading.progress(60)
         filtered_df = df.loc[df[hub_name].isin(HUBS), COLUMNS].sort_values([hub_name,'Kirana'])
         filtered_df = filtered_df.loc[~filtered_df['undel_unpick_status'].isin(EXCLUSION_LIST)]
         filtered_df.loc[:, "geo_distance"] = filtered_df["geo_distance"].map('{:.2f}'.format)
+        ########################
         loading.progress(80)
-        
-    loading.progress(100)
+
+    ########################    
+    loading.progress(85)
     if 'filtered_df' not in st.session_state:
         st.session_state['filtered_df'] = filtered_df
     styled_df = table_styler(filtered_df)
     my_table.table(styled_df)
 
+    ########################
     loading.progress(100)
 
     hub_name = st.session_state['hub_name']
@@ -120,12 +126,14 @@ if (flag):
     if update_table:
         styled_df = table_styler(selected_df)
         my_table.table(styled_df)
+
+        
     loading.empty()
-    # image = export(styled_df,'pg')
+
+    download_btn = st.button("Save current report")
+    if download_btn:
+        export(styled_df, 'fake_report.png')
+        img = open('fake_report.png', 'rb')
+        st.download_button(label="Download Report", data=img, file_name="fake_report.png")
+        img.close()
     
-    # st.download_button(
-    #          label="Download Report",
-    #          data= ,
-    #          file_name="fake_report.png",
-    #          mime="image/png"
-    #        )
