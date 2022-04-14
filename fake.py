@@ -112,7 +112,7 @@ if (flag):
         st.session_state['filtered_df'] = filtered_df
     styled_df = table_styler(filtered_df)
     my_table.table(styled_df)
-    export(styled_df, 'fake_report.png')
+    export(styled_df, 'fake_report.png', table_conversion='matplotlib')
     img = open('fake_report.png', 'rb')
 
     ########################
@@ -128,7 +128,7 @@ if (flag):
     if update_table:
         styled_df = table_styler(selected_df)
         my_table.table(styled_df)
-        export(styled_df, 'fake_report.png')
+        export(styled_df, 'fake_report.png', table_conversion='matplotlib')
         img = open('fake_report.png', 'rb')
 
         
