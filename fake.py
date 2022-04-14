@@ -112,6 +112,8 @@ if (flag):
         st.session_state['filtered_df'] = filtered_df
     styled_df = table_styler(filtered_df)
     my_table.table(styled_df)
+    export(styled_df, 'fake_report.png')
+    img = open('fake_report.png', 'rb')
 
     ########################
     loading.progress(100)
@@ -126,14 +128,12 @@ if (flag):
     if update_table:
         styled_df = table_styler(selected_df)
         my_table.table(styled_df)
+        export(styled_df, 'fake_report.png')
+        img = open('fake_report.png', 'rb')
 
         
     loading.empty()
 
-    download_btn = st.button("Save current report")
-    if download_btn:
-        export(styled_df, 'fake_report.png')
-        img = open('fake_report.png', 'rb')
-        st.download_button(label="Download Report", data=img, file_name="fake_report.png")
-        img.close()
+    st.download_button(label="Download Report", data=img, file_name="fake_report.png")
+    img.close()
     
