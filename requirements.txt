@@ -3,3 +3,4 @@ openpyxl
 dataframe-image
 matplotlib
 bs4
+lxml
